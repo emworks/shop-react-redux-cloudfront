@@ -7,7 +7,7 @@ import schema from './schema';
 
 import { body } from './mock.json'
 
-const getProductsList: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
+export const getProductsList: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async () => {
   const data = JSON.parse(body)
   return await formatJSONResponse(data);
 };
