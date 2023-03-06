@@ -9,6 +9,8 @@ const dynamo = new AWS.DynamoDB.DocumentClient()
 import schema from './schema';
 
 export const getProductsById: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
+  console.log('event', event)
+  
   const { productId } = event.pathParameters
 
   try {

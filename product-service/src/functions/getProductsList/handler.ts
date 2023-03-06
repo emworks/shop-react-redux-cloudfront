@@ -8,7 +8,9 @@ const dynamo = new AWS.DynamoDB.DocumentClient()
 
 import schema from './schema';
 
-export const getProductsList: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async () => {
+export const getProductsList: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
+  console.log('event', event)
+
   try {
     const { Items: products } = await dynamo.scan({
       TableName: process.env.PRODUCTS_TABLE_NAME

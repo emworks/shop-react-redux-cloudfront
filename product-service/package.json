@@ -14,7 +14,8 @@
     "@middy/core": "^3.4.0",
     "@middy/http-cors": "^4.2.6",
     "@middy/http-json-body-parser": "^3.4.0",
-    "aws-sdk": "^2.1328.0"
+    "aws-sdk": "^2.1328.0",
+    "crypto": "^1.0.1"
   },
   "devDependencies": {
     "@serverless/typescript": "^3.0.0",
