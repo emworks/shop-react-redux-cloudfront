@@ -4,7 +4,8 @@
   "description": "Serverless aws-nodejs-typescript template",
   "main": "serverless.ts",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "server:deploy": "sls deploy"
   },
   "engines": {
     "node": ">=14.15.0"
@@ -12,7 +13,8 @@
   "dependencies": {
     "@middy/core": "^3.4.0",
     "@middy/http-cors": "^4.2.6",
-    "@middy/http-json-body-parser": "^3.4.0"
+    "@middy/http-json-body-parser": "^3.4.0",
+    "aws-sdk": "^2.1328.0"
   },
   "devDependencies": {
     "@serverless/typescript": "^3.0.0",

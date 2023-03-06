@@ -11,4 +11,8 @@ export default {
       },
     },
   ],
+  environment: {
+    PRODUCTS_TABLE_NAME: 'productsTable',
+    STOCKS_TABLE_NAME: 'stocksTable',
+  }
 };
