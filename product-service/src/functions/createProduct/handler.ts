@@ -14,20 +14,27 @@ export const createProduct: ValidatedEventAPIGatewayProxyEvent<typeof schema> = 
 
     try {
         const { count, ...item } = event.body
-        
+
         const id = crypto.randomUUID()
 
-        await dynamo.put({
-            TableName: process.env.PRODUCTS_TABLE_NAME,
-            Item: { id, ...item }
-        }).promise()
-
-        await dynamo.put({
-            TableName: process.env.STOCKS_TABLE_NAME,
-            Item: {
-                product_id: id,
-                count
-            }
+        await dynamo.transactWrite({
+            TransactItems: [
+                {
+                    Put: {
+                        TableName: process.env.PRODUCTS_TABLE_NAME,
+                        Item: { id, ...item }
+                    },
+                },
+                {
+                    Put: {
+                        TableName: process.env.STOCKS_TABLE_NAME,
+                        Item: {
+                            product_id: id,
+                            count
+                        }
+                    },
+                },
+            ],
         }).promise()
 
         return formatJSONResponse({ ...item, count })
