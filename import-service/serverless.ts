@@ -70,7 +70,18 @@ const serverlessConfiguration: AWS = {
         Type: "AWS::S3::Bucket",
         Properties: {
           BucketName: '${self:custom.s3BucketName}',
-          AccessControl: "PublicRead"
+          AccessControl: "PublicRead",
+          CorsConfiguration: {
+            CorsRules: [
+              {
+                AllowedHeaders: ['*'],
+                AllowedMethods: ['GET', 'PUT'],
+                AllowedOrigins: ['*'],
+                Id: 'CORSRuleId1',
+                MaxAge: '3600'
+              }
+            ]
+          }
         }
       },
     }
