@@ -30,3 +30,8 @@ export const createProductTransaction = async (data: FromSchema<typeof schema>) 
         ],
     }).promise()
 }
+
+export const sendSNSMessage = async (params: AWS.SNS.PublishInput, callback = async (err, data) => console.log(err, data)) => {
+    const sns = new AWS.SNS()
+    return await sns.publish(params, callback).promise()
+}

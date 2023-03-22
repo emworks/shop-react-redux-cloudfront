@@ -1,11 +1,8 @@
-import AWS from 'aws-sdk'
 import { ValidatedEventSQSEvent } from '@libs/sqs';
-import { createProductTransaction } from 'src/utils';
+import { createProductTransaction, sendSNSMessage } from 'src/utils';
 
 export const catalogBatchProcess: ValidatedEventSQSEvent = async (event) => {
     console.log('event', event)
-
-    const sns = new AWS.SNS()
 
     try {
         const products = []
@@ -19,11 +16,11 @@ export const catalogBatchProcess: ValidatedEventSQSEvent = async (event) => {
 
         await Promise.all(productsPromise)
 
-        await sns.publish({
+        await sendSNSMessage({
             Subject: 'Products have been created',
             Message: JSON.stringify(products),
             TopicArn: process.env.SNS_ARN
-        }, async (err, data) => console.log(err, data)).promise()
+        })
     } catch (err) {
         console.log(err)
     }
