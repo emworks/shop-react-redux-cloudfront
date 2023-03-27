@@ -8,6 +8,7 @@ const importFileParser: ValidatedEventS3Event = async (event) => {
   console.log('event', event)
 
   const s3 = new AWS.S3()
+  const sqs = new AWS.SQS()
 
   for (const record of event.Records) {
     const Bucket = record.s3.bucket.name;
@@ -19,7 +20,10 @@ const importFileParser: ValidatedEventS3Event = async (event) => {
 
     try {
       for await (const data of parser) {
-        console.log(data);
+        sqs.sendMessage({
+          QueueUrl: process.env.SQS_URL,
+          MessageBody: JSON.stringify(data),
+        }, (err, data) => console.log(err, data))
 
         await s3.copyObject({
           Bucket,

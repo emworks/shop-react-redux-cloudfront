@@ -3,6 +3,7 @@ import type { AWS } from '@serverless/typescript';
 import getProductsList from '@functions/getProductsList';
 import getProductsById from '@functions/getProductsById';
 import createProduct from '@functions/createProduct';
+import catalogBatchProcess from '@functions/catalogBatchProcess';
 
 const serverlessConfiguration: AWS = {
   service: 'product-service',
@@ -38,13 +39,20 @@ const serverlessConfiguration: AWS = {
               "dynamodb:DeleteItem"
             ],
             Resource: "arn:aws:dynamodb:eu-west-1:*:*"
+          },
+          {
+            Effect: 'Allow',
+            Action: 'sns:*',
+            Resource: {
+              Ref: 'SNSTopic'
+            }
           }
         ]
       }
     }
   },
   // import the function via paths
-  functions: { getProductsList, getProductsById, createProduct },
+  functions: { getProductsList, getProductsById, createProduct, catalogBatchProcess },
   package: { individually: true },
   custom: {
     autoswagger: {
@@ -105,6 +113,28 @@ const serverlessConfiguration: AWS = {
           ProvisionedThroughput: {
             ReadCapacityUnits: 1,
             WriteCapacityUnits: 1
+          }
+        }
+      },
+      SQSQueue: {
+        Type: 'AWS::SQS::Queue',
+        Properties: {
+          QueueName: 'catalogItemsQueue'
+        }
+      },
+      SNSTopic: {
+        Type: 'AWS::SNS::Topic',
+        Properties: {
+          TopicName: 'createProductTopic'
+        }
+      },
+      SNSSubscription: {
+        Type: 'AWS::SNS::Subscription',
+        Properties: {
+          Endpoint: 'yevgeny_yakushev@epam.com',
+          Protocol: 'email',
+          TopicArn: {
+            Ref: 'SNSTopic'
           }
         }
       }

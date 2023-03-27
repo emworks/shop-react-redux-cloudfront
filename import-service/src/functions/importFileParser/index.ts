@@ -17,4 +17,8 @@ export default {
       },
     },
   ],
+  environment: {
+    // TODO: take that from products-service
+    SQS_URL: 'https://sqs.eu-west-1.amazonaws.com/854170183769/catalogItemsQueue',
+  }
 };
