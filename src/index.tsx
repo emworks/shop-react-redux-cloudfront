@@ -7,6 +7,28 @@ import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { theme } from "~/theme";
+import axios from "axios";
+
+axios.interceptors.response.use(
+  response => response,
+  error => {
+    const { status } = error.response
+
+    switch (status) {
+      case 401:
+      case 403:
+        alert(error.response.data?.message)
+        break;
+      case 400:
+        alert(error.response.data?.data)
+        break;
+      default:
+        console.error(error.response)
+    }
+
+    return Promise.reject(error.response)
+  }
+)
 
 const queryClient = new QueryClient({
   defaultOptions: {
